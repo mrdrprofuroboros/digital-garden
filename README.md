@@ -56,3 +56,32 @@ This an early version of MindStone, which mean there are bugs and issues. Below 
 - Graphview does not load when clicking on side-bar or click node on graphview, browser reload will refresh it state
 - Graph view layout and interaction is still very rough. More UI/UX improvements are needed.
 - Transclusion is not working yet.
+
+### Deployment
+
+#### build
+```
+cp -R ../../Documents/obsidian/FamilyTree/* posts 
+rm -rf posts/☁️\ Облако posts/⚙<fe0f>\ Шаблоны 
+docker build -t obsidian-wiki .
+```
+
+#### test
+```
+docker run -p 3000:3000 obsidian-wiki
+```
+
+#### deploy
+```
+docker save -o image.tar obsidian-wiki
+rsync image.tar photoprism:image.tar
+
+ssh photoprism
+docker load -i image.tar
+rm image.tar
+cd /opt/photoprism
+docker-compose up -d
+exit
+
+rm image.tar
+```
