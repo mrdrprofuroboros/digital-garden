@@ -2,13 +2,14 @@ import Head from "next/head";
 import Layout from "../../components/Layout";
 import {
     getAllSlugs,
+    getFlattenArray,
     getSinglePost,
     convertObject,
     getDirectoryData,
-    constructGraphData, getLocalGraphData
+    constructGraphData,
+    getLocalGraphData
 } from "../../lib/utils";
 import FolderTree from "../../components/FolderTree";
-import {getFlattenArray} from "../../lib/utils";
 import MDContent from "../../components/MDContent";
 import dynamic from 'next/dynamic'
 
@@ -18,7 +19,7 @@ const DynamicGraph = dynamic(
 )
 
 export default function Home({note, backLinks, fileNames, tree, flattenNodes, graphData}) {
-
+    console.log('rendering note')
     return (
         <Layout>
             <Head>
@@ -36,23 +37,23 @@ export default function Home({note, backLinks, fileNames, tree, flattenNodes, gr
     );
 }
 
-export async function getStaticPaths() {
-    const allPostsData = getAllSlugs();
-    const paths = allPostsData.map(p => ({params: {id: p}}))
+const allPostsData = getAllSlugs();
+const paths = allPostsData.map((p) => ({ params: { id: p } }));
 
+export async function getStaticPaths() {
     return {
         paths,
         fallback: false
     };
 }
 
+const tree = convertObject(getDirectoryData());
+const flattenNodes = getFlattenArray(tree);
+
 const {nodes, edges} = constructGraphData()
 
-export function getStaticProps({params}) {
+export function getStaticProps({ params }) {
     const note = getSinglePost(params.id);
-    const tree = convertObject(getDirectoryData());
-    const flattenNodes = getFlattenArray(tree)
-
     const listOfEdges =   edges.filter(anEdge => anEdge.target === params.id)
     const internalLinks = listOfEdges.map(anEdge => nodes.find(aNode => aNode.slug === anEdge.source)).filter(element => element !== undefined)
     const backLinks = [...new Set(internalLinks)]

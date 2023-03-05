@@ -126,6 +126,34 @@ a:hover {
     flex-direction: column;
 }
 
+.canvas {
+    height: 100vh;
+    width: 100%;
+}
+
+.canvas a {
+    color: var(--text-normal);
+    outline: none;
+    vertical-align: middle;
+    display: flex;
+    height: 100%;
+    /*this centers the text horizontally*/
+    justify-content: center;
+    /*this centers the text vertically*/
+    align-items: center;
+}
+
+.canvas a:hover {
+    color: var(--text-accent);
+}
+
+.link-node {
+    border-radius: 1rem;
+}
+
+.canvas a h2 {
+    text-align: center;
+}
 
 .theme-light {
     --background-primary: white;

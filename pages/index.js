@@ -1,55 +1,42 @@
+import Head from "next/head";
 import Layout from "../components/Layout";
 import {
-    getSinglePost,
-    getDirectoryData,
-    convertObject,
-    getFlattenArray,
-    getLocalGraphData,
-    constructGraphData
+  getSingleCanvas,
+  convertObject,
+  getDirectoryData,
+  getFlattenArray,
 } from "../lib/utils";
 import FolderTree from "../components/FolderTree";
-import dynamic from 'next/dynamic'
-import MDContent from "../components/MDContent";
+import Canvas from "../components/Canvas";
+import "reactflow/dist/style.css";
 
-
-// This trick is to dynamically load component that interact with window object (browser only)
-const DynamicGraph = dynamic(
-    () => import('../components/Graph'),
-    { loading: () => <p>Loading ...</p>, ssr: false }
-)
-
-export default function Home({graphData, content, tree, flattenNodes, backLinks}) {
-    return (
-        <Layout>
-            <div className = 'container'>
-                <nav className="nav-bar">
-                    <FolderTree tree={tree} flattenNodes={flattenNodes}/>
-                </nav>
-                <MDContent content={content}  handleOpenNewContent={null} backLinks={backLinks}/>
-                <DynamicGraph graph={graphData}/>
-            </div>
-        </Layout>
-    );
-
+export default function Home({ note, tree, flattenNodes }) {
+  const { nodes, edges } = note.data;
+  console.log(nodes)
+  return (
+    <Layout>
+      <Head>{note.title && <meta name="title" content={note.title} />}</Head>
+      <div className="container">
+        <nav className="nav-bar">
+          <FolderTree tree={tree} flattenNodes={flattenNodes} />
+        </nav>
+        <Canvas nodes={nodes} edges={edges} />
+      </div>
+    </Layout>
+  );
 }
-const {nodes, edges} = constructGraphData()
 
 export function getStaticProps() {
-    const tree = convertObject(getDirectoryData());
-    const contentData = getSinglePost("index");
-    const flattenNodes = getFlattenArray(tree)
-    const listOfEdges =   edges.filter(anEdge => anEdge.target === "index")
-    const internalLinks = listOfEdges.map(anEdge => nodes.find(aNode => aNode.slug === anEdge.source)).filter(element => element !== undefined)
-    const backLinks = [...new Set(internalLinks)]
+  const note = getSingleCanvas("/");
+  console.log(note)
+  const tree = convertObject(getDirectoryData());
+  const flattenNodes = getFlattenArray(tree);
 
-    const graphData = getLocalGraphData("index");
-    return {
-        props: {
-            content: contentData.data,
-            tree: tree,
-            flattenNodes: flattenNodes,
-            graphData:graphData,
-            backLinks: backLinks
-        },
-    };
+  return {
+    props: {
+      note,
+      tree: tree,
+      flattenNodes: flattenNodes,
+    },
+  };
 }
