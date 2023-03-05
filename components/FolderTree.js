@@ -23,7 +23,7 @@ export default function FolderTree(props) {
       <TCTreeItem
         key={nodes.id}
         nodeId={nodes.id}
-        label={nodes.name.replace(".md", "")}
+        label={nodes.name.replace(".md", "").replace(".canvas", "")}
       >
         {Array.isArray(nodes.children)
           ? nodes.children.map((node) => renderTree(node))
