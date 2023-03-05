@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import ReactFlow, {
     Background,  
     ConnectionLineType,
-    Controls
+    Controls,
 } from "reactflow";
 import LinkNode from "./LinkNode";
 

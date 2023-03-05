@@ -11,14 +11,14 @@ function LinkNode({ data, isConnectable }) {
             <h2>{data.text}</h2>
             <Handle
                 id="top"
-                type="source"
+                type="target"
                 position={Position.Top}
                 style={{ background: "#555" }}
                 isConnectable={isConnectable}
             />
             <Handle
                 id="bottom"
-                type="target"
+                type="source"
                 position={Position.Bottom}
                 style={{ background: "#555" }}
                 isConnectable={isConnectable}
