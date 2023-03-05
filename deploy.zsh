@@ -6,7 +6,7 @@ rm -rf posts
 mkdir posts
 
 cp -R ../FamilyTree/* posts
-rm -rf posts/☁️\ Облако posts/⚙️\ Шаблоны posts/✅\ План.md posts/📆 Календарь.md
+rm -rf posts/☁️\ Облако posts/⚙️\ Шаблоны posts/✅\ План.md posts/📆\ Календарь.md
 docker build -t obsidian-wiki .
 
 cd /opt/photoprism
