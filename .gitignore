@@ -31,3 +31,4 @@ yarn-error.log*
 
 .vercel
 /posts
+graph-data.json
