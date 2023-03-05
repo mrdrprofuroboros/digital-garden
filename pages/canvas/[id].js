@@ -32,10 +32,11 @@ export default function Home({
     );
 }
 
-const allPostsData = getAllSlugs();
-const paths = allPostsData.map((p) => ({ params: { id: p } }));
-
 export async function getStaticPaths() {
+    const allPostsData = getAllSlugs();
+    const paths = allPostsData
+      .filter((p) => p.endsWith(".canvas"))
+      .map((p) => ({ params: { id: p } }));
     return {
         paths,
         fallback: false,

@@ -12,7 +12,6 @@ import "reactflow/dist/style.css";
 
 export default function Home({ note, tree, flattenNodes }) {
   const { nodes, edges } = note.data;
-  console.log(nodes)
   return (
     <Layout>
       <Head>{note.title && <meta name="title" content={note.title} />}</Head>
@@ -28,7 +27,6 @@ export default function Home({ note, tree, flattenNodes }) {
 
 export function getStaticProps() {
   const note = getSingleCanvas("/");
-  console.log(note)
   const tree = convertObject(getDirectoryData());
   const flattenNodes = getFlattenArray(tree);
 

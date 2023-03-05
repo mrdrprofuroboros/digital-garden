@@ -28,7 +28,7 @@ function BackLinks({linkList}) {
     </div>);
 }
 
-function MDContent({content, backLinks, handleOpenNewContent}) {
+function MDContent({name, content, backLinks, handleOpenNewContent}) {
 
     function handleInternalLinkClick() {
         //Processing fetching
@@ -46,6 +46,7 @@ function MDContent({content, backLinks, handleOpenNewContent}) {
                 🌱 <strong>Follow</strong> or <strong>DM</strong> me on Twitter at <span><a
                 href="https://twitter.com/tuancm">@tuancm</a></span>
             </Alert> */}
+            <h1>{name}</h1>
             <div dangerouslySetInnerHTML={{__html: content}}/>
             {/*<button onClick={handleInternalLinkClick}>Click me</button>*/}
             {/*<hr/>*/}

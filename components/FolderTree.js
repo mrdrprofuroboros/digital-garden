@@ -20,11 +20,15 @@ const TCTreeItem = styled(TreeItem)(({theme}) => ({
 
 export default function FolderTree(props) {
     const renderTree = (nodes) => (
-        <TCTreeItem key={nodes.id} nodeId={nodes.id} label={nodes.name}>
-            {Array.isArray(nodes.children)
-                ? nodes.children.map((node) => renderTree(node))
-                : null}
-        </TCTreeItem>
+      <TCTreeItem
+        key={nodes.id}
+        nodeId={nodes.id}
+        label={nodes.name.replace(".md", "")}
+      >
+        {Array.isArray(nodes.children)
+          ? nodes.children.map((node) => renderTree(node))
+          : null}
+      </TCTreeItem>
     );
 
     const router = useRouter()

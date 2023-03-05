@@ -19,7 +19,6 @@ const DynamicGraph = dynamic(
 )
 
 export default function Home({note, backLinks, fileNames, tree, flattenNodes, graphData}) {
-    console.log('rendering note')
     return (
         <Layout>
             <Head>
@@ -29,7 +28,7 @@ export default function Home({note, backLinks, fileNames, tree, flattenNodes, gr
                 <nav className="nav-bar">
                     <FolderTree tree={tree} flattenNodes={flattenNodes}/>
                 </nav>
-                <MDContent content={note.data} fileNames={fileNames} handleOpenNewContent={null} backLinks={backLinks}/>
+                <MDContent name={note.name} content={note.data} fileNames={fileNames} handleOpenNewContent={null} backLinks={backLinks}/>
                 <DynamicGraph graph={graphData}/>
             </div>
 
@@ -37,10 +36,12 @@ export default function Home({note, backLinks, fileNames, tree, flattenNodes, gr
     );
 }
 
-const allPostsData = getAllSlugs();
-const paths = allPostsData.map((p) => ({ params: { id: p } }));
-
 export async function getStaticPaths() {
+    const allPostsData = getAllSlugs();
+    const paths = allPostsData
+        .filter((p) => !p.endsWith('.canvas'))
+        .map((p) => ({ params: { id: p } }));
+
     return {
         paths,
         fallback: false
@@ -53,6 +54,7 @@ const flattenNodes = getFlattenArray(tree);
 const {nodes, edges} = constructGraphData()
 
 export function getStaticProps({ params }) {
+    console.log(params.id)
     const note = getSinglePost(params.id);
     const listOfEdges =   edges.filter(anEdge => anEdge.target === params.id)
     const internalLinks = listOfEdges.map(anEdge => nodes.find(aNode => aNode.slug === anEdge.source)).filter(element => element !== undefined)
