@@ -62,12 +62,18 @@ This an early version of MindStone, which mean there are bugs and issues. Below 
 #### build
 ```
 ssh photoprism
+
+cd /opt/FamilyTree
+git pull
+
 cd /opt/digital-garden
+git pull
+
 rm -rf posts
 mkdir posts
 
 cp -R ../FamilyTree/* posts
-rm -rf posts/☁️\ Облако posts/⚙️\ Шаблоны
+rm -rf posts/☁️\ Облако posts/⚙️\ Шаблоны posts/✅\ План.md posts/📆 Календарь.md
 docker build -t obsidian-wiki .
 ```
 
