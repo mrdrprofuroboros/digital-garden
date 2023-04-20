@@ -1,9 +1,11 @@
 ## What is MindStone?
 MindStone is a free open-source alternative solution to [Obsidian Publish](https://obsidian.md/publish)
 
+*This repo is a fork of MindStone, introducing support for `canvas` files*
+
 Here how it look like once published, checkout [demo version](https://mindstone.tuancao.me/) here:
 
-![](public/images/CleanShot%202022-04-20%20at%2008.34.17@2x.png)
+<img width="1440" alt="Снимок экрана 2023-04-20 в 00 39 05" src="https://user-images.githubusercontent.com/21140507/233268320-7a16dcd1-f5e2-469f-843c-bad842834f23.png">
 
 This website include a published version of default Obsidian Help vault, See it in action here 
 
