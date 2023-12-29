@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import Footer from "./Footer";
 import { useRouter } from "next/router";
 import { deserializeBackLinks, getContent } from "volglass-backend";
@@ -83,28 +84,40 @@ export interface MDContentData {
 	slugName: string;
 	fileName: string;
 	content: string;
-	cacheData: string;
 	backLinks: string;
 }
+
+interface ZeroProps {}
 
 function MDContent({
 	slugName,
 	fileName,
 	content,
-	cacheData,
 	backLinks,
 }: MDContentData): JSX.Element {
 	const router = useRouter();
-	const Content = getContent(
-		slugName,
-		`${content}`,
-		cacheData,
-		router,
-		codeEncoder,
-		renderMermaid(useCurrentTheme() === "dark"),
-		renderTex,
-		Canvas,
-	);
+	const [Content, setContent] = useState<React.FC<ZeroProps> | null>(null);
+	useEffect(() => {
+		const fetchData = async () => {
+			const tmpContent = await getContent(
+				slugName,
+				`${content}`,
+				router,
+				codeEncoder,
+				renderMermaid(useCurrentTheme() === "dark"),
+				renderTex,
+				Canvas,
+			);
+			setContent(tmpContent);
+		};
+
+		fetchData();
+	}, []);
+
+	if (!Content) {
+		return <div>Loading...</div>;
+	}
+
 	if (slugName.match(".canvas")) {
 		return (
 			<>

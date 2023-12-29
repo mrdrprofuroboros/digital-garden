@@ -121,9 +121,8 @@ fun getCacheData(): Promise<Array<String>> = cacheScope.promise {
     arrayOf(serialize(cacheData), directoryTreeData, searchIndex)
 }
 
-@JsExport
-fun getContent(fileNameString: String, content: String, cacheData: String, router: NextRouter, codeEncoder: CodeEncoder, mermaidRender: MermaidRender, texRender: TexRender, renderCanvas: CanvasRender): FC<Props> {
-    val (dependingLinks, fileNameInfo) = deserialize<CacheData>(cacheData)
+fun getCachedContent(fileNameString: String, content: String, cacheData: CacheData, router: NextRouter, codeEncoder: CodeEncoder, mermaidRender: MermaidRender, texRender: TexRender, renderCanvas: CanvasRender): FC<Props> {
+    val (dependingLinks, fileNameInfo) = cacheData
     val fileName = FileNameString(fileNameString)
     return when {
         fileName.isImageFile -> {
@@ -140,7 +139,7 @@ fun getContent(fileNameString: String, content: String, cacheData: String, route
             val contentGetter: (String) -> FC<Props> = {
                 val contentFileName = SlugString(it.removeMdExtension()).toFileName(fileNameInfo.duplicatedFile)
                 val embedContent = dependingLinks.embedContents[contentFileName] ?: ""
-                getContent(contentFileName.fileName, embedContent, cacheData, router, codeEncoder, mermaidRender, texRender, renderCanvas)
+                getCachedContent(contentFileName.fileName, embedContent, cacheData, router, codeEncoder, mermaidRender, texRender, renderCanvas)
             }
             renderCanvas(canvasData, contentGetter)
         }
@@ -148,6 +147,12 @@ fun getContent(fileNameString: String, content: String, cacheData: String, route
             convertMarkdownToReactElement(fileName, content, dependingLinks, fileNameInfo, router, codeEncoder, mermaidRender, texRender)
         }
     }
+}
+
+@JsExport
+fun getContent(fileNameString: String, content: String, router: NextRouter, codeEncoder: CodeEncoder, mermaidRender: MermaidRender, texRender: TexRender, renderCanvas: CanvasRender): Promise<FC<Props>> = cacheScope.promise {
+    val (cache, directoryTreeData, searchIndex) = cacheData.get()!!
+    return@promise getCachedContent(fileNameString, content, cache, router, codeEncoder, mermaidRender, texRender, renderCanvas)
 }
 
 inline fun <reified T : @Serializable Any> deserialize(jsonString: String): T = json.decodeFromString(jsonString)
