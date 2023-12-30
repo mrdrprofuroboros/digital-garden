@@ -27,7 +27,7 @@ value class PathString(val path: String) {
      */
     fun toSlugString(postFolder: String): SlugString {
         // /path/to/post/dir/README.md -> /dir/README.md -> /dir/README
-        return SlugString(path.replace(postFolder, "").replace(" ", "+").removeMdExtension())
+        return SlugString(path.replace(postFolder, "").replace(' ', '+').replace('?', '+').removeMdExtension())
     }
 }
 
