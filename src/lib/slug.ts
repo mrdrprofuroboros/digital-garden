@@ -54,6 +54,7 @@ export function toSlug(filePath: string): string {
 		return filePath
 			.replace(getMarkdownFolder(), "")
 			.replaceAll(" ", "+")
+			.replaceAll("?", "+")
 			.replace(".md", "");
 	} else {
 		// TODO handle this properly
